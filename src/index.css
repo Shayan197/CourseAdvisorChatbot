@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: 'outfit';
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: Popins; */
+}
+#root{
+    min-height: 100vh;
+    animation: fadeIn 1.5s;
+}
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@layer components{
+    .btn-primary{
+        @apply w-72 h-12 bg-[#077EFF] text-white
+    }
+    .sidebar_icon_design{
+        @apply flex gap-3 p-3 rounded-full text-[#282828] cursor-pointer hover:bg-[#e2e6eb]
+    }
+    .card_design{
+        @apply h-52 p-4 bg-[#f0f4f9] rounded-lg relative cursor-pointer text-customGray/70 hover:bg-[#dfe4ea]
+    }
+    .card_img_design{
+        @apply w-8 p-1 absolute bg-white rounded-full right-3 bottom-3
+    }
+    .otp_input_design{
+        @apply border-2 size-16 outline-none text-3xl text-center rounded-lg
+    }
+}
