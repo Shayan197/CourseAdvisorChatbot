@@ -1,6 +1,8 @@
+// CourseDetails.jsx
 import React, { useEffect, useState } from "react";
 import { assets } from "../Assets/assets";
 import CurrentEnrollments from "./CurrentEnrollments";
+import { dummyCourses } from "../Assets/data";
 
 const CourseDetails = () => {
   const [courseData, setCourseData] = useState([]);
@@ -12,82 +14,6 @@ const CourseDetails = () => {
   };
 
   useEffect(() => {
-    // Dummy data instead of API
-    const dummyCourses = [
-      {
-        Course_no: "CS101",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 1,
-        SECTION: "A",
-        Assi_score: 15,
-        Prac_score: 20,
-        Midterm_score: 30,
-        Final_score: 40,
-        Q_points: 3.0,
-        Grade: "A",
-      },
-      {
-        Course_no: "CS102",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 2,
-        SECTION: "B",
-        Assi_score: 12,
-        Prac_score: 15,
-        Midterm_score: 25,
-        Final_score: 30,
-        Q_points: 2.0,
-        Grade: "F",
-      },
-      {
-        Course_no: "CS101",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 3,
-        SECTION: "A",
-        Assi_score: 15,
-        Prac_score: 20,
-        Midterm_score: 30,
-        Final_score: 40,
-        Q_points: 3.0,
-        Grade: "A",
-      },
-      {
-        Course_no: "CS102",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 4,
-        SECTION: "B",
-        Assi_score: 12,
-        Prac_score: 15,
-        Midterm_score: 25,
-        Final_score: 30,
-        Q_points: 2.0,
-        Grade: "F",
-      },
-      {
-        Course_no: "CS101",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 5,
-        SECTION: "A",
-        Assi_score: 15,
-        Prac_score: 20,
-        Midterm_score: 30,
-        Final_score: 40,
-        Q_points: 3.0,
-        Grade: "A",
-      },
-      {
-        Course_no: "CS102",
-        ATTEMPT_NO: 1,
-        SEMESTER_NO: 6,
-        SECTION: "B",
-        Assi_score: 12,
-        Prac_score: 15,
-        Midterm_score: 25,
-        Final_score: 30,
-        Q_points: 2.0,
-        Grade: "F",
-      },
-    ];
-
     setCourseData(dummyCourses);
     setLoading(false);
   }, []);
@@ -95,9 +21,11 @@ const CourseDetails = () => {
   return (
     <div className="flex-1 min-h-screen relative">
       {/* Cards Section */}
-      <div className="flex justify-around items-center text-lg p-7 text-customGray/90 gap-6">
-        <div className="h-36 w-64 bg-customBlue/70 rounded-2xl px-4 py-6 flex-1">
-          <div className="flex-1 flex justify-between mb-6">
+      {/* Cards Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-7 text-lg text-customGray/90">
+        {/* Passed Courses */}
+        <div className="h-36 w-52 md:w-full bg-customBlue/70 rounded-2xl px-4 py-6 flex flex-col justify-between">
+          <div className="flex justify-between">
             <p>Passed Courses</p>
             <img src={assets.paper_icon} alt="paper-icon" className="size-6" />
           </div>
@@ -111,15 +39,19 @@ const CourseDetails = () => {
             }
           </p>
         </div>
-        <div className="h-36 w-64 bg-[#FF8000]/70 rounded-2xl px-4 py-6 flex-1">
-          <div className="flex-1 flex justify-between mb-6">
+
+        {/* Current Enrollments */}
+        <div className="h-36 w-52 md:w-full bg-[#FF8000]/70 rounded-2xl px-4 py-6 flex flex-col justify-between">
+          <div className="flex justify-between">
             <p>Current Enrollments</p>
             <img src={assets.paper_icon} alt="paper-icon" className="size-6" />
           </div>
           <p className="ml-4 text-3xl">{enrollCount}</p>
         </div>
-        <div className="h-36 w-64 bg-[#FF0000]/70 rounded-2xl px-4 py-6 flex-1">
-          <div className="flex-1 flex justify-between mb-6">
+
+        {/* Failed Courses */}
+        <div className="h-36 w-52 md:w-full bg-[#FF0000]/70 rounded-2xl px-4 py-6 flex flex-col justify-between">
+          <div className="flex justify-between">
             <p>Failed Courses</p>
             <img src={assets.paper_icon} alt="paper-icon" className="size-6" />
           </div>
@@ -132,20 +64,22 @@ const CourseDetails = () => {
           </p>
         </div>
       </div>
+
       {/* Table Section */}
-      <div className="px-7">
+      <div className="px-4 md:px-7">
         <h1 className="text-2xl mb-2 font-semibold">
-          Current Enrolled Cources
+          Current Enrolled Courses
         </h1>
         <CurrentEnrollments onEnrollCountCount={handleEnrollCount} />
-        <h1 className="text-2xl mb-2 font-semibold mt-2">
-          All Cources Details
+
+        <h1 className="text-2xl mb-2 font-semibold mt-4">
+          All Courses Details
         </h1>
         {loading ? (
           <p className="text-center text-lg">Loading data...</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
+            <table className="w-full border-collapse border border-gray-300 text-sm md:text-base">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border border-gray-300 px-3 py-2">
@@ -176,7 +110,7 @@ const CourseDetails = () => {
               <tbody>
                 {courseData.length > 0 ? (
                   courseData.map((course, index) => {
-                    const grade = course.Grade?.trim().toUpperCase(); // Trim spaces and convert to uppercase
+                    const grade = course.Grade?.trim().toUpperCase();
                     const isPass = ["A", "B", "C", "D"].includes(grade);
 
                     return (
@@ -223,7 +157,7 @@ const CourseDetails = () => {
                 ) : (
                   <tr>
                     <td colSpan="6" className="text-center text-red-500 py-4">
-                      There is an error occured
+                      There is an error occurred
                     </td>
                   </tr>
                 )}

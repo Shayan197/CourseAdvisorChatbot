@@ -3,7 +3,7 @@ import { assets } from "../Assets/assets";
 import { Context } from "../context/Context";
 import "../App.css";
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [extended, setExtended] = useState(false);
   const { onSent, setRecentPrompt, newChat, prevPrompt, setPrevPrompt } =
     useContext(Context);
@@ -11,6 +11,7 @@ const Sidebar = () => {
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
     await onSent(prompt);
+    setSidebarOpen(false); // mobile pe auto close
   };
 
   useEffect(() => {
@@ -44,39 +45,64 @@ const Sidebar = () => {
   }, [setPrevPrompt]);
 
   return (
-    <div className="min-h-screen inline-flex flex-col justify-between bg-[#f0f4f9] px-4 py-6">
-      <div className="top">
-        <img
-          className="menu w-6 block ml-3 cursor-pointer"
-          src={assets.menu_icon}
-          alt=""
-          onClick={() => setExtended((prev) => !prev)}
-        />
-        <div
-          onClick={() => newChat()}
-          className="new-chat mt-10 inline-flex items-center gap-3 px-4 py-3 bg-[#e6eaf1] rounded-full text-xs text-gray-600 cursor-pointer"
-        >
-          <img className="w-5" src={assets.plus_icon} alt="" />
-          {extended ? <p>New Chat</p> : null}
-        </div>
+    <div
+      className={`h-screen flex flex-col bg-[#f0f4f9] transition-all duration-300 z-50
+      ${extended ? "w-64" : "w-16"}
+      ${sidebarOpen ? "absolute left-0 top-0" : "hidden"} md:flex`}
+    >
+      {/* Top Section */}
+      <div className="flex-1 flex flex-col justify-between overflow-hidden">
+        <div className="p-4">
+          {/* Menu Icon */}
+          <img
+            className="w-6 cursor-pointer mb-6"
+            src={assets.menu_icon}
+            alt="menu"
+            onClick={() => setExtended(!extended)}
+          />
 
-        {extended ? (
-          <div className="flex flex-col">
-            <p className="mt-8 mb-4">Recent</p>
-            <div className="flex flex-col gap-2 overflow-y-auto h-[70vh] custom-scrollbar">
+          {/* New Chat */}
+          <div
+            onClick={() => newChat()}
+            className="flex items-center gap-3 px-3 py-2 bg-[#e6eaf1] rounded-full text-sm text-gray-600 cursor-pointer hover:bg-[#d6dbe4] transition"
+          >
+            <img className="w-5" src={assets.plus_icon} alt="" />
+            {extended && <p>New Chat</p>}
+          </div>
+
+          {/* Recent */}
+          {extended && (
+            <div className="mt-6 flex flex-col gap-2 overflow-y-auto max-h-[65vh] pr-2 custom-scrollbar">
+              <p className="text-gray-600 text-sm font-medium mb-2">Recent</p>
               {prevPrompt?.map((item, index) => (
                 <div
                   key={index}
                   onClick={() => loadPrompt(item)}
-                  className="sidebar_icon_design pr-2 ani"
+                  className="flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-gray-200 transition"
                 >
                   <img className="w-5" src={assets.message_icon} alt="" />
-                  <p>{item?.slice(0, 15)}...</p>
+                  <p className="truncate w-full">{item}</p>
                 </div>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Bottom Section (Fixed) */}
+        <div className="border-t border-gray-200 p-3">
+          <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
+            <img className="w-5" src={assets.question_icon} alt="" />
+            {extended && <p>Help</p>}
           </div>
-        ) : null}
+          <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
+            <img className="w-5" src={assets.history_icon} alt="" />
+            {extended && <p>Activity</p>}
+          </div>
+          <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
+            <img className="w-5" src={assets.setting_icon} alt="" />
+            {extended && <p>Settings</p>}
+          </div>
+        </div>
       </div>
     </div>
   );

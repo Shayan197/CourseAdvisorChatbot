@@ -17,7 +17,6 @@ const AddRule = () => {
     }
   }, [updateData]);
 
-  // AddRule.js (update handleSubmit)
   const handleSubmit = () => {
     const newRule = {
       Key_Name: keyName,
@@ -27,55 +26,66 @@ const AddRule = () => {
     };
 
     if (isUpdateMode) {
-      // sirf update ke liye navigate me bhej do
       navigate("/admindashboard", {
         state: { action: "update", rule: newRule },
       });
     } else {
-      // naye add ke liye bhej do
       navigate("/admindashboard", { state: { action: "add", rule: newRule } });
     }
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
-      <div className="p-6 border-2 w-2/3 rounded-xl">
-        <h2 className="text-xl font-bold mb-4 text-center">Add Rule</h2>
+    <div className="h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
+      <div className="p-6 sm:p-8 border-2 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 rounded-xl bg-white shadow-lg">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-6 text-center">
+          {isUpdateMode ? "Update Rule" : "Add Rule"}
+        </h2>
+
+        {/* Key Name */}
         <div className="mb-4">
           <input
             type="text"
             placeholder="Key Name"
             value={keyName}
             onChange={(e) => setKeyName(e.target.value)}
-            className="border px-2 py-1 w-full"
+            className="border px-3 py-2 w-full rounded"
             disabled={isUpdateMode}
           />
         </div>
+
+        {/* Type */}
         <div className="mb-4">
           <input
             type="text"
             placeholder="Type"
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="border px-2 py-1 w-full"
+            className="border px-3 py-2 w-full rounded"
           />
         </div>
-        <div className="mb-4">
+
+        {/* Value */}
+        <div className="mb-6">
           <input
             type="text"
             placeholder="Value"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="border px-2 py-1 w-full"
+            className="border px-3 py-2 w-full rounded"
           />
         </div>
-        <div className="flex justify-end">
-          <button onClick={handleSubmit} className="btn-primary rounded mr-2 ">
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row justify-end gap-3">
+          <button
+            onClick={handleSubmit}
+            className="btn-primary rounded px-5 py-2"
+          >
             {isUpdateMode ? "Update Rule" : "Add Rule"}
           </button>
           <button
             onClick={() => navigate("/admindashboard")}
-            className="bg-gray-500 text-white px-4 py-2 rounded"
+            className="bg-gray-500 text-white px-5 py-2 rounded hover:bg-gray-600"
           >
             Cancel
           </button>

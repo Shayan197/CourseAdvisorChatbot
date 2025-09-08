@@ -19,7 +19,6 @@ const Supervisor = () => {
     navigate("/");
   };
 
-  // common function for both enter key + button click
   const handleSearchNavigate = () => {
     const matchedStudent = students.find(
       (student) => student.Reg_No.toLowerCase() === search.toLowerCase()
@@ -39,13 +38,15 @@ const Supervisor = () => {
   return (
     <div className="min-h-screen p-4">
       {/* Top Bar */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-700">Advisor Panel</h1>
-        <div className="relative inline-block text-left">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+        <h1 className="text-2xl font-bold text-gray-700 text-center md:text-left">
+          Advisor Panel
+        </h1>
+        <div className="relative inline-block text-left self-center md:self-auto">
           <img
             src={assets.profile_icon}
             alt="profile"
-            className="w-10 cursor-pointer"
+            className="w-10 cursor-pointer mx-auto md:mx-0"
             onClick={() => setDropdown((prev) => !prev)}
           />
           {dropdown && (
@@ -61,12 +62,13 @@ const Supervisor = () => {
         </div>
       </div>
 
-      {/* Welcome & Search */}
-      <div className="mt-4 text-xl font-semibold text-gray-700 text-center">
+      {/* Welcome */}
+      <div className="mt-4 text-lg md:text-xl font-semibold text-gray-700 text-center">
         Welcome {empFullName}
       </div>
 
-      <div className="mt-2 flex flex-col gap-2">
+      {/* Search */}
+      <div className="mt-4 flex flex-col md:flex-row gap-2 md:items-center md:justify-center">
         <input
           type="text"
           placeholder="Search by Reg No"
@@ -77,7 +79,7 @@ const Supervisor = () => {
         />
         <button
           onClick={handleSearchNavigate}
-          className="btn-primary w-40 rounded-md"
+          className="btn-primary w-full md:w-40 rounded-md"
         >
           Search
         </button>
@@ -85,9 +87,9 @@ const Supervisor = () => {
 
       {/* Data Table */}
       <div className="mt-6 overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow">
+        <table className="min-w-full bg-white rounded-lg shadow text-sm">
           <thead>
-            <tr className="text-left text-sm font-semibold text-gray-600">
+            <tr className="text-left font-semibold text-gray-600">
               <th className="py-2 px-4">Reg No</th>
               <th className="py-2 px-4">Name</th>
               <th className="py-2 px-4">Final Course</th>
@@ -104,7 +106,7 @@ const Supervisor = () => {
               .map((student, index) => (
                 <tr
                   key={index}
-                  className="text-sm text-gray-700 hover:bg-gray-50"
+                  className="text-gray-700 hover:bg-gray-50 border-b last:border-0"
                 >
                   <td className="py-2 px-4">{student.Reg_No}</td>
                   <td className="py-2 px-4">

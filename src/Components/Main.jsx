@@ -32,26 +32,28 @@ const Main = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen pb-24 relative">
-      <div className="flex justify-between items-center text-2xl p-5 text-customGray/90">
-        <p>Chatbot</p>
-        <div className="flex gap-4">
+    <div className="flex-1 flex flex-col h-full">
+      {/* Top Bar */}
+      <div className="flex md:justify-between items-center text-lg md:text-2xl p-4 md:p-5 md:border-b text-customGray/90 border-gray-200">
+        {" "}
+        <p className="hidden sm:block font-semibold">Chatbot</p>
+        <div className="flex gap-4 ml-auto">
           <img
             src={assets.profile_icon}
             alt=""
-            className="w-10 cursor-pointer"
+            className="w-9 md:w-10 cursor-pointer"
             onClick={() => setDropdown((prev) => !prev)}
           />
           {dropdown && (
-            <div className="absolute right-7 top-10 bg-[#f0f4f9] text-base px-4 py-1">
+            <div className="absolute right-10 top-24 md:right-4 md:top-14 bg-[#f0f4f9] text-sm md:text-base px-4 py-2 rounded-md shadow-md">
               <p
-                className="hover:bg-[#dfe4ea] cursor-pointer"
+                className="hover:bg-[#dfe4ea] cursor-pointer px-2 py-1 rounded"
                 onClick={() => navigate("allcourses")}
               >
                 Courses Details
               </p>
               <p
-                className="hover:bg-[#dfe4ea] cursor-pointer text-red-400"
+                className="hover:bg-[#dfe4ea] cursor-pointer text-red-400 px-2 py-1 rounded"
                 onClick={handleLogout}
               >
                 Logout
@@ -61,103 +63,97 @@ const Main = () => {
         </div>
       </div>
 
-      <div className="main-cont max-w-4xl m-auto">
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto w-full max-w-6xl mx-auto px-3 sm:px-4">
         {!showResult ? (
           <>
-            <div className="greet mx-0 my-12 text-5xl text-[#b2b6b3] font-medium">
-              <p className="text-customGray/70 mb-2">Hello, Students.</p>
-              <p>How can I assist you today?</p>
+            {/* Greeting */}
+            <div className="text-center my-8 sm:my-12">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-medium text-gray-500">
+                Hello, Students.
+              </h1>
+              <p className="text-base sm:text-lg md:text-2xl text-gray-600 mt-2">
+                How can I assist you today?
+              </p>
             </div>
 
-            <div className="cards grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4 p-5">
-              <div
-                className="card_design"
-                onClick={() => handleFAQClick("Tell me about my cgpa.")}
-              >
-                <p>Tell me about my cgpa.</p>
-                <img
-                  src={assets.compass_icon}
-                  alt=""
-                  className="card_img_design"
-                />
-              </div>
-              <div
-                className="card_design"
-                onClick={() => handleFAQClick("Tell me about my fail cources.")}
-              >
-                <p>Tell me about my fail cources.</p>
-                <img
-                  src={assets.bulb_icon}
-                  alt=""
-                  className="card_img_design"
-                />
-              </div>
-              <div
-                className="card_design"
-                onClick={() => handleFAQClick("What is Next JS?")}
-              >
-                <p>What is Next JS?</p>
-                <img
-                  src={assets.message_icon}
-                  alt=""
-                  className="card_img_design"
-                />
-              </div>
-              <div
-                className="card_design"
-                onClick={() =>
-                  handleFAQClick("Am I going to drop this semester?")
-                }
-              >
-                <p>Am I going to drop this semester?</p>
-                <img
-                  src={assets.code_icon}
-                  alt=""
-                  className="card_img_design"
-                />
-              </div>
+            {/* Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 p-2">
+              {[
+                { text: "Tell me about my cgpa.", icon: assets.compass_icon },
+                {
+                  text: "Tell me about my fail courses.",
+                  icon: assets.bulb_icon,
+                },
+                { text: "What is Next JS?", icon: assets.message_icon },
+                {
+                  text: "Am I going to drop this semester?",
+                  icon: assets.code_icon,
+                },
+              ].map((card, i) => (
+                <div
+                  key={i}
+                  className="card_design flex flex-col justify-between p-3 sm:p-4 text-center hover:shadow-md transition"
+                  onClick={() => handleFAQClick(card.text)}
+                >
+                  <p className="text-xs sm:text-sm md:text-base mb-2">
+                    {card.text}
+                  </p>
+                  <img
+                    src={card.icon}
+                    alt="card_icon"
+                    className="card_img_design w-8 sm:w-10 md:w-12 mx-auto"
+                  />
+                </div>
+              ))}
             </div>
           </>
         ) : (
-          <div className="result px-[5%] py-0 max-h-[70vh] overflow-y-scroll">
-            <div className="result-title my-10 mx-0 flex items-center gap-5">
+          // Result Section
+          <div className="result px-3 sm:px-4 py-6 max-h-[65vh] overflow-y-auto">
+            <div className="result-title flex items-center gap-3 mb-6">
               <img
-                className="w-10 rounded-full"
+                className="w-8 sm:w-10 rounded-full"
                 src={assets.profile_icon}
                 alt="user_icon"
               />
-              <p>{recentPrompt}</p>
+              <p className="font-medium text-base sm:text-lg">{recentPrompt}</p>
             </div>
-            <div className="result-data flex items-start gap-5">
+            <div className="flex gap-3 items-start">
               <img
-                className="w-10"
+                className="w-6 sm:w-8 flex-shrink-0"
                 src={assets.gemini_icon}
                 alt="gemini_icon"
               />
-              {loading ? (
-                <div className="ani w-full flex flex-col gap-3">
-                  <hr className="hrDesign" />
-                  <hr className="hrDesign" />
-                  <hr className="hrDesign" />
-                </div>
-              ) : (
-                <p
-                  className="font-normal text-base leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: resultData }}
-                ></p>
-              )}
+              <div className="flex-1">
+                {loading ? (
+                  <div className="flex flex-col gap-2 w-full">
+                    <hr className="hrDesign" />
+                    <hr className="hrDesign" />
+                    <hr className="hrDesign" />
+                  </div>
+                ) : (
+                  <p
+                    className="text-sm sm:text-base leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: resultData }}
+                  ></p>
+                )}
+              </div>
             </div>
           </div>
         )}
+      </div>
 
-        <div className="main-botom absolute bottom-0 w-full max-w-4xl py-0 px-5 m-auto">
-          <div className="searchBox flex items-center justify-between bg-[#f0f4f9] px-5 py-2 rounded-full">
+      {/* Bottom Input Box */}
+      <div className="sticky bottom-0 w-full bg-white border-t border-gray-200 py-2 px-3 sm:px-5">
+        <div className="max-w-4xl mx-auto">
+          <div className="searchBox flex items-center justify-between bg-[#f0f4f9] px-3 sm:px-5 py-2 rounded-full">
             <input
               onChange={(e) => setInput(e.target.value)}
               value={input}
               type="text"
               placeholder="Enter a prompt here"
-              className="flex-1 bg-transparent border-none outline-none p-2 text-xl"
+              className="flex-1 bg-transparent border-none outline-none px-2 text-sm sm:text-base md:text-lg"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   onSent();
@@ -233,9 +229,8 @@ const Main = () => {
               />
             </div>
           </div>
-          <p className="text-xs my-3 mx-auto text-center font-normal text-customGray/60">
-            Chatbot may apply inaccurate info, including about academia so
-            double check its responses. Your question trained it.
+          <p className="text-[10px] sm:text-xs mt-2 text-center text-customGray/60">
+            Chatbot may give inaccurate info. Double check responses before use.
           </p>
         </div>
       </div>
