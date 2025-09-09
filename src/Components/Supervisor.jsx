@@ -68,7 +68,7 @@ const Supervisor = () => {
       </div>
 
       {/* Search */}
-      <div className="mt-4 flex flex-col md:flex-row gap-2 md:items-center md:justify-center">
+      <div className="mt-4 flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
         <input
           type="text"
           placeholder="Search by Reg No"
@@ -81,7 +81,7 @@ const Supervisor = () => {
           onClick={handleSearchNavigate}
           className="btn-primary w-full md:w-40 rounded-md"
         >
-          Search
+          Go to dashbord
         </button>
       </div>
 
