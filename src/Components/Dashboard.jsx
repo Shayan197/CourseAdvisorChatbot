@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { assets } from "../Assets/assets";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation(); // current route path
+
+  // Check if current page is CourseDetails
+  const isCourseDetails = location.pathname.includes("allcourses");
 
   return (
     <div className="flex h-screen relative">
@@ -21,16 +25,18 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        {/* Top Bar with Menu (Mobile only) */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b">
-          <img
-            src={assets.menu_icon}
-            alt="menu"
-            className="w-6 cursor-pointer"
-            onClick={() => setSidebarOpen(true)}
-          />
-          <p className="font-semibold">Chatbot</p>
-        </div>
+        {/* Top Bar with Menu (Mobile only & hide on CourseDetails) */}
+        {!isCourseDetails && (
+          <div className="md:hidden flex items-center justify-between p-4 border-b">
+            <img
+              src={assets.menu_icon}
+              alt="menu"
+              className="w-6 cursor-pointer"
+              onClick={() => setSidebarOpen(true)}
+            />
+            <p className="font-semibold">Chatbot</p>
+          </div>
+        )}
 
         <Outlet />
       </div>
