@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../Assets/assets";
 import { Context } from "../context/Context";
+import { useSidebar } from "../context/SidebarContext";
 import "../App.css";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+const Sidebar = () => {
+  const { sidebarOpen, setSidebarOpen, isMobile } = useSidebar();
   const [extended, setExtended] = useState(false);
   const { onSent, setRecentPrompt, newChat, prevPrompt, setPrevPrompt } =
     useContext(Context);
-
-  const isMobile = window.innerWidth < 768; // Mobile breakpoint
 
   const loadPrompt = async (prompt) => {
     setRecentPrompt(prompt);
@@ -57,23 +57,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <div
-      className={`h-screen flex flex-col bg-[#f0f4f9] transition-all duration-300 z-50 ${sidebarWidth} md:flex`}
+      className={`flex flex-col bg-[#f0f4f9] transition-all duration-300 z-50 ${
+        isMobile
+          ? sidebarOpen
+            ? "w-64 fixed left-0 top-0 h-screen"
+            : "hidden"
+          : extended
+          ? "w-64 h-screen"
+          : "w-16 h-screen"
+      }`}
     >
       {/* Top Section */}
       <div className="flex-1 flex flex-col justify-between overflow-hidden">
         <div className="p-4">
           {/* Menu Icon */}
-          <img
-            className="w-6 cursor-pointer mb-6"
-            src={assets.menu_icon}
-            alt="menu"
-            onClick={
-              () =>
-                isMobile
-                  ? setSidebarOpen(!sidebarOpen) // mobile toggle
-                  : setExtended(!extended) // desktop toggle
-            }
-          />
+          {!isMobile && (
+            <img
+              className="w-6 cursor-pointer mb-6"
+              src={assets.menu_icon}
+              alt="menu"
+              onClick={() => setExtended(!extended)}
+            />
+          )}
 
           {/* New Chat */}
           <div
@@ -123,8 +128,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           )}
 
           {/* Mobile */}
-          {isMobile && sidebarOpen && (
-            <>
+          {(extended || (isMobile && sidebarOpen)) && (
+            <div className="border-t border-gray-200 p-3">
               <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
                 <img className="w-5" src={assets.question_icon} alt="" />
                 <p>Help</p>
@@ -137,7 +142,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <img className="w-5" src={assets.setting_icon} alt="" />
                 <p>Settings</p>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

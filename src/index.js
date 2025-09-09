@@ -1,14 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import ContextProvider from './context/Context';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import ContextProvider from "./context/Context";
+import { SidebarProvider } from "./context/SidebarContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ContextProvider>
-    <App />
+    <SidebarProvider>
+      <App />
+    </SidebarProvider>
   </ContextProvider>
 );
 reportWebVitals();

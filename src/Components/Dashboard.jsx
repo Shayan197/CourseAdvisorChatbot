@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { assets } from "../Assets/assets";
+import { useSidebar } from "../context/SidebarContext";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation(); // current route path
-
-  // Check if current page is CourseDetails
-  const isCourseDetails = location.pathname.includes("allcourses");
+  const { sidebarOpen, setSidebarOpen, isMobile } = useSidebar();
 
   return (
     <div className="flex h-screen relative">
@@ -16,18 +13,18 @@ const Dashboard = () => {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Backdrop for mobile */}
-      {sidebarOpen && (
+      {sidebarOpen && isMobile && (
         <div
-          className="fixed inset-0 bg-black/40 md:hidden z-40"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Bar with Menu (Mobile only & hide on CourseDetails) */}
-        {!isCourseDetails && (
-          <div className="md:hidden flex items-center justify-between p-4 border-b">
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        {/* Mobile Top Bar */}
+        {isMobile && (
+          <div className="flex items-center justify-between p-4 border-b">
             <img
               src={assets.menu_icon}
               alt="menu"
@@ -37,8 +34,10 @@ const Dashboard = () => {
             <p className="font-semibold">Chatbot</p>
           </div>
         )}
-
-        <Outlet />
+        {/* Outlet (Courses / other pages) */}
+        <div className="flex-1 overflow-y-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
