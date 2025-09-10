@@ -109,24 +109,6 @@ const Sidebar = () => {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-200 p-3">
-          {/* Desktop */}
-          {!isMobile && (
-            <>
-              <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
-                <img className="w-5" src={assets.question_icon} alt="" />
-                {extended && <p>Help</p>}
-              </div>
-              <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
-                <img className="w-5" src={assets.history_icon} alt="" />
-                {extended && <p>Activity</p>}
-              </div>
-              <div className="flex items-center gap-3 p-2 cursor-pointer hover:bg-gray-200 rounded-md transition">
-                <img className="w-5" src={assets.setting_icon} alt="" />
-                {extended && <p>Settings</p>}
-              </div>
-            </>
-          )}
-
           {/* Mobile */}
           {(extended || (isMobile && sidebarOpen)) && (
             <div className="border-t border-gray-200 p-3">
